@@ -19,6 +19,7 @@ namespace KWaylandServer
 class IdleInhibitorV1Interface;
 class SurfaceRole;
 class ViewportInterface;
+class FractionalScaleV1Interface;
 
 struct SurfaceState
 {
@@ -125,6 +126,7 @@ public:
     qreal pendingScaleOverride = 1.;
 
     QVector<OutputInterface *> outputs;
+    qreal preferredScale = 1.0;
 
     LockedPointerV1Interface *lockedPointer = nullptr;
     ConfinedPointerV1Interface *confinedPointer = nullptr;
@@ -134,6 +136,7 @@ public:
     QVector<IdleInhibitorV1Interface *> idleInhibitors;
     ViewportInterface *viewportExtension = nullptr;
     std::unique_ptr<LinuxDmaBufV1Feedback> dmabufFeedbackV1;
+    FractionalScaleV1Interface *fractionalScaleExtension = nullptr;
     ClientConnection *client = nullptr;
 
 protected:

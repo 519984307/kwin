@@ -528,17 +528,11 @@ void ActivationTest::stackScreensHorizontally()
         QRect(1280, 0, 1280, 1024),
     };
 
-    const QVector<int> screenScales{
-        1,
-        1,
-    };
-
     QMetaObject::invokeMethod(kwinApp()->platform(),
                               "setVirtualOutputs",
                               Qt::DirectConnection,
                               Q_ARG(int, screenGeometries.count()),
-                              Q_ARG(QVector<QRect>, screenGeometries),
-                              Q_ARG(QVector<int>, screenScales));
+                              Q_ARG(QVector<QRect>, screenGeometries));
 }
 
 void ActivationTest::stackScreensVertically()
@@ -551,17 +545,11 @@ void ActivationTest::stackScreensVertically()
         QRect(0, 1024, 1280, 1024),
     };
 
-    const QVector<int> screenScales{
-        1,
-        1,
-    };
-
     QMetaObject::invokeMethod(kwinApp()->platform(),
                               "setVirtualOutputs",
                               Qt::DirectConnection,
                               Q_ARG(int, screenGeometries.count()),
-                              Q_ARG(QVector<QRect>, screenGeometries),
-                              Q_ARG(QVector<int>, screenScales));
+                              Q_ARG(QVector<QRect>, screenGeometries));
 }
 
 }

@@ -9,6 +9,7 @@
 #include "clientconnection.h"
 #include "compositor_interface.h"
 #include "display.h"
+#include "fractionalscale_v1_interface_p.h"
 #include "idleinhibit_v1_interface_p.h"
 #include "linuxdmabufv1clientbuffer.h"
 #include "pointerconstraints_v1_interface_p.h"
@@ -71,6 +72,8 @@ void SurfaceInterfacePrivate::addChild(SubSurfaceInterface *child)
     cached.above.append(child);
     current.above.append(child);
     child->surface()->setOutputs(outputs);
+    child->surface()->setPreferredScale(preferredScale);
+
     Q_EMIT q->childSubSurfaceAdded(child);
     Q_EMIT q->childSubSurfacesChanged();
 }
@@ -1090,6 +1093,24 @@ QPoint SurfaceInterface::toSurfaceLocal(const QPoint &point) const
 QPointF SurfaceInterface::toSurfaceLocal(const QPointF &point) const
 {
     return QPointF(point.x() * d->scaleOverride, point.y() * d->scaleOverride);
+}
+
+void SurfaceInterface::setPreferredScale(qreal scale)
+{
+    if (scale == d->preferredScale) {
+        return;
+    }
+    d->preferredScale = scale;
+
+    if (d->fractionalScaleExtension) {
+        d->fractionalScaleExtension->setPreferredScale(scale);
+    }
+    for (auto child : qAsConst(d->current.below)) {
+        child->surface()->setPreferredScale(scale);
+    }
+    for (auto child : qAsConst(d->current.above)) {
+        child->surface()->setPreferredScale(scale);
+    }
 }
 
 } // namespace KWaylandServer
